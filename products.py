@@ -1,54 +1,48 @@
 class Product:
+    """Product class"""
     def __init__(self, name, price, quantity):
+        """Initialize the product"""
         self.name:str = name
         self.price:float = price
         self.quantity:int = quantity
         self.active:bool = True
 
     def get_quantity(self):
+        """Return the quantity of the product"""
         return self.quantity
 
     def set_quantity(self, quantity):
+        """Set the quantity of the product"""
         self.quantity = quantity
 
     def is_active(self):
+        """Returns a bool indicating if the product is active"""
         return self.active
 
     def activate(self):
+        """Activate the product"""
         self.active = True
 
     def deactivate(self):
+        """Deactivate the product"""
         self.active = False
 
     def show(self):
+        """Prints out the product"""
         print(f"Name: {self.name}, Price: {self.price}, Quantity: {self.quantity}")
 
     def buy(self, quantity) -> float:
-        try:
-            if not self.is_active(): raise ValueError("Product is not active")
+        """Buy a quantity and return its price
 
-            if quantity > self.quantity:
-                raise ValueError("Quantity is too high")
-            else:
-                self.quantity -= quantity
-                if self.quantity <= 0: self.deactivate()
-                return quantity * self.price
-        except ValueError as e:
-            print(e)
-            return 0
+        Raises:
+            ValueError: If the quantity is too low or the product is not active"""
+        if not self.is_active():
+            raise ValueError("Product is not active")
 
+        if quantity > self.quantity:
+            raise ValueError("Quantity is too high")
 
-
-#Testcase
-# bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-# mac = Product("MacBook Air M2", price=1450, quantity=100)
-#
-# print(bose.buy(50))
-# print(mac.buy(100))
-# print(mac.is_active())
-#
-# bose.show()
-# mac.show()
-#
-# bose.set_quantity(1000)
-# bose.show()
+        self.quantity -= quantity
+        if self.quantity <= 0:
+            self.deactivate()
+        return quantity * self.price

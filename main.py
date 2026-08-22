@@ -1,18 +1,16 @@
 import os
 import time
-from operator import truediv
 
 import products, store
 
 class Colors:
+    """Colors class"""
     YELLOW = '\033[33m'
     GREEN = '\033[32m'
     RED = '\033[31m'
     BLUE = '\033[34m'
     CYAN = '\033[36m'
     RESET = '\033[0m'
-    def color(self, color, msg):
-        return f"{color}{msg}{Colors.RESET}"
 
 # setup initial stock of inventory
 product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
