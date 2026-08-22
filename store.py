@@ -1,6 +1,5 @@
 from products import Product
 
-
 class Store:
     """Store class"""
     def __init__(self, products:list[Product] = None):
@@ -35,6 +34,6 @@ class Store:
         for product, quantity in shopping_list:
             try:
                 order_total += product.buy(quantity)
-            except ValueError as e:
-                print(e)
+            except ValueError as error:
+                print(error)
         return order_total
