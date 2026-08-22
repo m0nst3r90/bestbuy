@@ -80,7 +80,7 @@ def start(store:store.Store):
                                 for order_product, amount in order:
                                     if order_product == product:
                                         cart_product_amount += amount
-                                print(f"{i + 1}. {'{Colors.YELLOW}' if is_product_chosen else ''}{product.name:<26}{'{Colors.RESET}' if is_product_chosen else ''} {Colors.BLUE}{'$':>2}{product.price:>6}{Colors.RESET}{Colors.CYAN}{product.quantity:>10}{Colors.RESET} {Colors.RED}{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}{Colors.RESET}")
+                                print(f"{i + 1}. {Colors.YELLOW if is_product_chosen else ''}{product.name:<26}{Colors.RESET if is_product_chosen else ''} {Colors.BLUE}{'$':>2}{product.price:>6}{Colors.RESET}{Colors.CYAN}{product.quantity:>10}{Colors.RESET} {Colors.RED}{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}{Colors.RESET}")
 
                             print(f"\nChoosen Product: {Colors.YELLOW}{choosen_product.name}{Colors.RESET}")
                             amount_input = int(input(f"\nWhat {Colors.CYAN}amount{Colors.RESET} do you want? "))
