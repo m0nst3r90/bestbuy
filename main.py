@@ -55,7 +55,7 @@ def start(store:store.Store):
                                 cart_product_amount += amount
                         print(f"{i + 1}. {product.name:<26} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m \033[31m{('- '+str(cart_product_amount)) if cart_product_amount > 0 else ''}\033[0m")
 
-                    print(f"When you want to finish order or leave, enter empty text.")
+                    print(f"\nWhen you want to finish order or leave, enter empty text.")
                     print(f"Current cart: \033[34m${total_order_cost}\033[0m")
                     userinput = input("\nWich product \033[32m#\033[0m do you want? ")
 
