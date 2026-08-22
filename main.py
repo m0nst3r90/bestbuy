@@ -4,6 +4,16 @@ from operator import truediv
 
 import products, store
 
+class Colors:
+    YELLOW = '\033[33m'
+    GREEN = '\033[32m'
+    RED = '\033[31m'
+    BLUE = '\033[34m'
+    CYAN = '\033[36m'
+    RESET = '\033[0m'
+    def color(self, color, msg):
+        return f"{color}{msg}{Colors.RESET}"
+
 # setup initial stock of inventory
 product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
                  products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
@@ -17,28 +27,28 @@ def start(store:store.Store):
         while True:
             os.system("cls" if os.name == "nt" else "clear")
 
-            print(f"\033[33m{'Store Menu':^30}\n{'----------':^30}\033[0m")
-            print("\033[32m1.\033[0m List all products in store")
-            print("\033[32m2.\033[0m Show total amount in store")
-            print("\033[32m3.\033[0m Make an order")
-            print("\033[32m4.\033[0m \033[31mQuit\033[0m")
+            print(f"{Colors.YELLOW}{'Store Menu':^30}\n{'----------':^30}{Colors.RESET}")
+            print(f"{Colors.GREEN}1.{Colors.RESET} List all products in store")
+            print(f"{Colors.GREEN}2.{Colors.RESET} Show total amount in store")
+            print(f"{Colors.GREEN}3.{Colors.RESET} Make an order")
+            print(f"{Colors.GREEN}4.{Colors.RESET} {Colors.RED}Quit{Colors.RESET}")
 
-            userinput = input("Please choose a \033[32mnumber\033[0m: ")
+            userinput = input(f"Please choose a {Colors.GREEN}number{Colors.RESET}: ")
             if userinput == "1":
                 os.system("cls" if os.name == "nt" else "clear")
-                print(f"\033[33m{'All Products':^30}\n{'------------':^30}\033[0m")
+                print(f"{Colors.YELLOW}{'All Products':^30}\n{'------------':^30}{Colors.RESET}")
                 print(f"{'Name':<28}{'Price':>10}{'Quantity':>10}")
                 for i, product in enumerate(store.get_all_products()):
-                    print(f"{i+1}. {product.name:<26} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m")
+                    print(f"{i+1}. {product.name:<26} {Colors.BLUE}{'$':>2}{product.price:>6}{Colors.RESET}{Colors.CYAN}{product.quantity:>10}{Colors.RESET}")
 
-                userinput = input("\nPress enter to go \033[32mback\033[0m")
+                userinput = input(f"\nPress enter to go {Colors.GREEN}back{Colors.RESET}")
                 break
             elif userinput == "2":
                 os.system("cls" if os.name == "nt" else "clear")
-                print(f"\033[33m{'Total Amount in Store':^30}\n{'---------------------':^30}\033[0m")
-                print(f"Total of \033[36m{store.get_total_quantity()}\033[0m items in store")
+                print(f"{Colors.YELLOW}{'Total Amount in Store':^30}\n{'---------------------':^30}{Colors.RESET}")
+                print(f"Total of {Colors.CYAN}{store.get_total_quantity()}{Colors.RESET} items in store")
 
-                userinput = input("\nPress enter to go \033[32mback\033[0m")
+                userinput = input(f"\nPress enter to go {Colors.GREEN}back{Colors.RESET}")
                 break
             elif userinput == "3":
                 exit_order = False
@@ -47,17 +57,17 @@ def start(store:store.Store):
 
                 while True:
                     os.system("cls" if os.name == "nt" else "clear")
-                    print(f"\033[33m{'Order Menu':^30}\n{'----------':^30}\033[0m")
+                    print(f"{Colors.YELLOW}{'Order Menu':^30}\n{'----------':^30}{Colors.RESET}")
                     for i, product in enumerate(store.get_all_products()):
                         cart_product_amount = 0
                         for order_product, amount in order:
                             if order_product == product:
                                 cart_product_amount += amount
-                        print(f"{i + 1}. {product.name:<26} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m \033[31m{('- '+str(cart_product_amount)) if cart_product_amount > 0 else ''}\033[0m")
+                        print(f"{i + 1}. {product.name:<26} {Colors.BLUE}{'$':>2}{product.price:>6}{Colors.RESET}{Colors.CYAN}{product.quantity:>10}{Colors.RESET} {Colors.RED}{('- '+str(cart_product_amount)) if cart_product_amount > 0 else ''}{Colors.RESET}")
 
                     print(f"\nWhen you want to finish order or leave, enter empty text.")
-                    print(f"Current cart: \033[34m${total_order_cost}\033[0m")
-                    userinput = input("\nWich product \033[32m#\033[0m do you want? ")
+                    print(f"Current cart: {Colors.BLUE}${total_order_cost}{Colors.RESET}")
+                    userinput = input(f"\nWich product {Colors.GREEN}#{Colors.RESET} do you want? ")
 
                     try:
                         userinput = int(userinput)
@@ -65,17 +75,17 @@ def start(store:store.Store):
                             choosen_product = store.get_all_products()[userinput - 1]
                             is_product_chosen = False
                             os.system("cls" if os.name == "nt" else "clear")
-                            print(f"\033[33m{'Order Menu':^30}\n{'----------':^30}\033[0m")
+                            print(f"{Colors.YELLOW}{'Order Menu':^30}\n{'----------':^30}{Colors.RESET}")
                             for i, product in enumerate(store.get_all_products()):
                                 cart_product_amount = 0
                                 is_product_chosen = product == choosen_product
                                 for order_product, amount in order:
                                     if order_product == product:
                                         cart_product_amount += amount
-                                print(f"{i + 1}. {'\033[33m' if is_product_chosen else ''}{product.name:<26}{'\033[0m' if is_product_chosen else ''} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m \033[31m{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}\033[0m")
+                                print(f"{i + 1}. {'{Colors.YELLOW}' if is_product_chosen else ''}{product.name:<26}{'{Colors.RESET}' if is_product_chosen else ''} {Colors.BLUE}{'$':>2}{product.price:>6}{Colors.RESET}{Colors.CYAN}{product.quantity:>10}{Colors.RESET} {Colors.RED}{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}{Colors.RESET}")
 
-                            print(f"\nChoosen Product: \033[33m{choosen_product.name}\033[0m")
-                            amount_input = int(input(f"\nWhat \033[36mamount\033[0m do you want? "))
+                            print(f"\nChoosen Product: {Colors.YELLOW}{choosen_product.name}{Colors.RESET}")
+                            amount_input = int(input(f"\nWhat {Colors.CYAN}amount{Colors.RESET} do you want? "))
                             if amount_input > 0:
                                 total_oder_amount = amount_input
                                 for order_product, order_amount in order:
@@ -89,7 +99,7 @@ def start(store:store.Store):
                                     print(f"Product added to list")
                                     time.sleep(1)
                                 else:
-                                    print(f"\033[31mAmount not available\033[0m")
+                                    print(f"{Colors.RED}Amount not available{Colors.RESET}")
                                     time.sleep(1)
 
 
@@ -99,7 +109,7 @@ def start(store:store.Store):
                             if len(order) < 1:
                                 break
 
-                            print(f"Order made! Total payment: \033[34m${store.order(order)}\033[0m")
+                            print(f"Order made! Total payment: {Colors.BLUE}${store.order(order)}{Colors.RESET}")
                             time.sleep(1)
                             order.clear()
                             total_order_cost = 0
