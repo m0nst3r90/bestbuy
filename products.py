@@ -5,7 +5,7 @@ class Product:
         self.name:str = name
         self.price:float = price
         self.quantity:int = quantity
-        self.active:bool = True
+        self.active:bool = self.quantity > 0
 
     def get_quantity(self):
         """Return the quantity of the product"""
