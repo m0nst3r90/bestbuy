@@ -45,7 +45,7 @@ def list_all_products_menu(menu_store):
             f"{CYAN}{product.quantity:>10}{RESET}")
 
     input(f"\nPress enter to go {GREEN}back{RESET}")
-    return
+
 
 def show_total_amount_menu(menu_store):
     """Handles the total amount menu"""
@@ -55,7 +55,7 @@ def show_total_amount_menu(menu_store):
     print(f"Total of {CYAN}{menu_store.get_total_quantity()}{RESET} items in store")
 
     input(f"\nPress enter to go {GREEN}back{RESET}")
-    return
+
 
 
 def order_main_menu(menu_store, order,total_order_cost):
@@ -79,6 +79,27 @@ def order_main_menu(menu_store, order,total_order_cost):
     return input(f"\nWich product {GREEN}#{RESET} do you want? ")
 
 
+
+def handle_product_listing(menu_store, order, choosen_product):
+    for i, product in enumerate(menu_store.get_all_products()):
+        cart_product_amount = 0
+        is_product_chosen = product == choosen_product
+        for order_product, amount in order:
+            if order_product == product:
+                cart_product_amount += amount
+        print(
+            f"{i + 1}. {YELLOW if is_product_chosen else ''}"
+            f"{product.name:<26}{RESET if is_product_chosen else ''} "
+            f"{BLUE}{'$':>2}{product.price:>6}{RESET}"
+            f"{CYAN}{product.quantity:>10}{RESET} "
+            f"{RED}{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}{RESET}")
+
+
+def get_order_amount(order, product) -> int:
+    """returns the amount of one specific product in the order"""
+    return sum( amount for order_product, amount in order if order_product == product)
+
+
 def order_menu(menu_store):
     """Handles the order loop"""
 
@@ -93,28 +114,14 @@ def order_menu(menu_store):
                 choosen_product = menu_store.get_all_products()[userinput - 1]
                 os.system("cls" if os.name == "nt" else "clear")
                 print(f"{YELLOW}{'Order Menu':^30}\n{'----------':^30}{RESET}")
-                for i, product in enumerate(menu_store.get_all_products()):
-                    cart_product_amount = 0
-                    is_product_chosen = product == choosen_product
-                    for order_product, amount in order:
-                        if order_product == product:
-                            cart_product_amount += amount
-                    print(
-                        f"{i + 1}. {YELLOW if is_product_chosen else ''}"
-                        f"{product.name:<26}{RESET if is_product_chosen else ''} "
-                        f"{BLUE}{'$':>2}{product.price:>6}{RESET}"
-                        f"{CYAN}{product.quantity:>10}{RESET} "
-                        f"{RED}{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}{RESET}")
+
+                handle_product_listing(menu_store, order, choosen_product)
 
                 print(f"\nChoosen Product: {YELLOW}{choosen_product.name}{RESET}")
                 amount_input = int(input(f"\nWhat {CYAN}amount{RESET} do you want? "))
                 if amount_input > 0:
-                    total_oder_amount = amount_input
-                    for order_product, order_amount in order:
-                        if order_product == choosen_product:
-                            total_oder_amount += order_amount
-
-                    if not total_oder_amount > choosen_product.get_quantity():
+                    total_order_amount = get_order_amount(order, choosen_product)
+                    if  total_order_amount <= choosen_product.get_quantity():
                         order.append((choosen_product, amount_input))
                         for product, amount in order:
                             total_order_cost += (product.price * amount)
