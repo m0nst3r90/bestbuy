@@ -1,7 +1,7 @@
-import products
-import store
 import os
 import time
+import store
+import products
 
 # Colors for console output
 YELLOW = '\033[33m'
@@ -81,6 +81,7 @@ def order_main_menu(menu_store, order,total_order_cost):
 
 
 def handle_product_listing(menu_store, order, choosen_product):
+    """handles product listing printing"""
     for i, product in enumerate(menu_store.get_all_products()):
         cart_product_amount = 0
         is_product_chosen = product == choosen_product
