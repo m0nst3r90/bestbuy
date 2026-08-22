@@ -25,7 +25,7 @@ class Store:
         """Get all active products from the store"""
         return [product for product in self.products if product.is_active()]
 
-    def order(self, shopping_list: list[tuple[Product, int]]) -> float:
+    def order(shopping_list: list[tuple[Product, int]]) -> float:
         """Order the shopping list
 
         Returns: the total price of the shopping list"""
