@@ -24,9 +24,9 @@ class Store:
 
     def order(self, shopping_list:list[tuple[Product, int]]) -> float:
         order_total: float = 0
-        for product2b, quantity2b in shopping_list:
-            if product2b.is_active():
-                order_total += product2b.buy(quantity2b)
+        for product, quantity in shopping_list:
+            if product.is_active():
+                order_total += product.buy(quantity)
         return order_total
 
 

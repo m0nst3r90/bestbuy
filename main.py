@@ -64,16 +64,18 @@ def start(store:store.Store):
                         userinput = int(userinput)
                         if userinput > 0 and userinput < len(store.get_all_products())+1:
                             choosen_product = store.get_all_products()[userinput - 1]
+                            is_product_chosen = False
                             os.system("cls" if os.name == "nt" else "clear")
                             print(f"\033[33m{'Order Menu':^30}\n{'----------':^30}\033[0m")
                             for i, product in enumerate(store.get_all_products()):
                                 cart_product_amount = 0
+                                is_product_chosen = product == choosen_product
                                 for order_product, amount in order:
                                     if order_product == product:
                                         cart_product_amount += amount
-                                print(
-                                    f"{i + 1}. {product.name:<26} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m \033[31m{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}\033[0m")
+                                print(f"{i + 1}. {'\033[33m' if is_product_chosen else ''}{product.name:<26}{'\033[0m' if is_product_chosen else ''} \033[34m{'$':>2}{product.price:>6}\033[0m\033[36m{product.quantity:>10}\033[0m \033[31m{('- ' + str(cart_product_amount)) if cart_product_amount > 0 else ''}\033[0m")
 
+                            print(f"\nChoosen Product: \033[33m{choosen_product.name}\033[0m")
                             amount_input = int(input(f"\nWhat \033[36mamount\033[0m do you want? "))
                             if amount_input > 0:
                                 total_oder_amount = amount_input
@@ -97,14 +99,13 @@ def start(store:store.Store):
                         if userinput == "":
                             if len(order) < 1:
                                 break
-                            else:
-                                for product, amount in order:
-                                    total_order_cost += (product.price * amount)
-                                    product.quantity = (product.quantity - amount)
-                            print(f"Order made! Total payment: \033[34m${total_order_cost}\033[0m")
+
+                            print(f"Order made! Total payment: \033[34m${store.order(order)}\033[0m")
                             time.sleep(1)
                             order.clear()
                             total_order_cost = 0
+
+                            break
 
                         elif userinput == "x":
                             exit_order =True

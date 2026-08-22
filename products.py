@@ -31,9 +31,11 @@ class Product:
                 raise ValueError("Quantity is too high")
             else:
                 self.quantity -= quantity
+                if self.quantity <= 0: self.deactivate()
                 return quantity * self.price
         except ValueError as e:
             print(e)
+            return 0
 
 
 
